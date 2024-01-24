@@ -1,0 +1,44 @@
+plugins {
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+if (file('secrets.gradle').exists()) {
+    apply from: 'secrets.gradle'
+} else {
+    project.ext.GH_USERNAME = "$System.env.GH_USERNAME"
+    project.ext.GH_TOKEN = "$System.env.GH_TOKEN"
+}
+
+group = 'dev.elliotjarnit'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven {
+        url = uri("https://maven.pkg.github.com/Swiftzerr/ElliotEngine-Runtime")
+        credentials {
+            username = GH_USERNAME
+            password = GH_TOKEN
+        }
+    }
+}
+
+application {
+    mainClass = 'dev.elliotjarnit.elliotstrike.Main'
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': application.mainClass
+    }
+}
+
+dependencies {
+    implementation 'dev.elliotjarnit:elliotengine:0.0.1-SNAPSHOT'
+}
