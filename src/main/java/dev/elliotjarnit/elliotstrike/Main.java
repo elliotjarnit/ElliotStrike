@@ -1,10 +1,17 @@
 package dev.elliotjarnit.elliotstrike;
 
 import dev.elliotjarnit.elliotengine.ElliotEngine;
+import dev.elliotjarnit.elliotengine.Objects.EScene;
+import dev.elliotjarnit.elliotstrike.Scenes.DevLevel;
 
 public class Main extends ElliotEngine {
+    private EScene mainLevel;
+    private EScene devLevel;
+
     public static void main(String[] args) {
-        new Main().run();
+        Main gameInstance = new Main();
+        gameInstance.run();
+        gameInstance.useDevLevel();
     }
 
     @Override
@@ -25,11 +32,18 @@ public class Main extends ElliotEngine {
 
     @Override
     public void setup() {
+        this.mainLevel = new EScene();
+        this.devLevel = new DevLevel();
 
+        this.setScene(this.mainLevel);
     }
 
     @Override
     public void loop() {
 
+    }
+
+    public void useDevLevel() {
+        this.setScene(this.devLevel);
     }
 }
