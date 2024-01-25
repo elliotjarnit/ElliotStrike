@@ -6,12 +6,13 @@ import dev.elliotjarnit.elliotstrike.Scenes.DevLevel;
 
 public class Main extends ElliotEngine {
     private EScene mainLevel;
-    private EScene devLevel;
+    private DevLevel devLevel;
+    private boolean devMode = false;
 
     public static void main(String[] args) {
+        System.out.println("Elliot Strike v" + Main.class.getPackage().getImplementationVersion());
         Main gameInstance = new Main();
         gameInstance.run();
-        gameInstance.useDevLevel();
     }
 
     @Override
@@ -27,6 +28,7 @@ public class Main extends ElliotEngine {
             this.setOption(Options.LOADING_SCREEN, "true");
         } else {
             this.setOption(Options.LOADING_SCREEN, "false");
+            this.setOption(Options.VERSION, "DEVELOPER");
         }
     }
 
@@ -36,11 +38,20 @@ public class Main extends ElliotEngine {
         this.devLevel = new DevLevel();
 
         this.setScene(this.mainLevel);
+
+        if (this.getOption(Options.VERSION).equals("DEVELOPER")) {
+            this.useDevLevel();
+            this.devMode = true;
+        }
+
+        this.inputManager.takeoverMouse();
     }
 
     @Override
     public void loop() {
-
+        if (devMode) {
+            this.devLevel.update(this);
+        }
     }
 
     public void useDevLevel() {
